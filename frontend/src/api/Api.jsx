@@ -46,9 +46,10 @@ export const uploadFile = (file) => {
 
   return axios
     .post(`${apiURL}/blogimage`, formData, config)
-    .then((response) => response.data)
+    .then((response) => response.data.url) // ✅ return full URL here
     .catch((error) => {
       console.error('Error uploading file:', error);
       throw error;
     });
 };
+
