@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiURL = 'http://localhost:8000';
+const apiURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 // Fetch all blogs or by category
 export const getBlogs = async (cat) => {
@@ -14,7 +14,6 @@ export const getBlogs = async (cat) => {
   }
 };
 
-// Create a new blog
 export const createBlog = async (data) => {
   try {
     const response = await axios.post(`${apiURL}/blog`, data);
@@ -25,7 +24,6 @@ export const createBlog = async (data) => {
   }
 };
 
-// Fetch blog by ID
 export const getBlogById = async (id) => {
   try {
     const response = await axios.get(`${apiURL}/blog/${id}`);
@@ -36,7 +34,6 @@ export const getBlogById = async (id) => {
   }
 };
 
-// Upload blog image
 export const uploadFile = (file) => {
   const formData = new FormData();
   formData.append('file', file);
