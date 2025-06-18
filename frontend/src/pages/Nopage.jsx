@@ -1,19 +1,22 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Nopage = () => {
     return (
-        <div>
-            404 Not Found!
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-gray-800 px-4">
+            <h1 className="text-6xl font-bold mb-4 text-red-500">404</h1>
+            <p className="text-2xl mb-2">Page Not Found</p>
+            <p className="text-center max-w-md mb-6">
+                The page you're looking for doesn't exist or has been moved.
+            </p>
+            <Link
+                to="/"
+                className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition duration-300 shadow-md"
+            >
+                Go Home
+            </Link>
         </div>
-    ); 
-}
+    );
+};
 
 export default Nopage;
-// This component is a placeholder for pages that do not exist.
-// It simply displays a "404 Not Found!" message when rendered.
-// It can be used in a React Router setup to handle unmatched routes.
-// This is useful for providing a user-friendly message when a user navigates to a route that does not correspond to any existing component or page.
-// It can be included in the routing configuration to catch all unmatched routes, ensuring that users receive a clear indication that the page they are looking for does not exist.
-// It can be styled further to match the application's design or to provide additional navigation options, such as a link back to the home page or a search bar.
-// This component does not require any props or state management, as it is a static message.
-// It can be imported and used in the main application file or within a specific routing setup to handle 404 errors gracefully.     
