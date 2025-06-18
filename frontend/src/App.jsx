@@ -14,7 +14,6 @@ function App() {
 
   return (
     <>
-      <BrowserRouter>
       <Routes>
         <Route path='/' element={<Layout />}>
           <Route path='/' element={<Home />}></Route>
@@ -24,9 +23,8 @@ function App() {
         </Route>
 
       </Routes>
-      </BrowserRouter>
     </>
   )
 }
 
-export default App
+export default App;
