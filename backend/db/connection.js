@@ -1,19 +1,20 @@
 const { Client } = require('pg');
+require('dotenv').config();
 
 const client = new Client({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'postgres',
-    password: 'Hunter1392',
-    port: 5432,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false, // Required for Render-hosted PostgreSQL
+  },
 });
 
 async function check() {
+  try {
     await client.connect();
-    // console.log("Connected to database:", client.connectionParameters.database); 
-    // const res = await client.query('SELECT * from blogs');
-    // console.log('First blog row:', res.rows[0]);
-    // await client.end();
+    console.log("Connected to remote PostgreSQL database");
+  } catch (err) {
+    console.error("Failed to connect to DB:", err);
+  }
 }
 
 check();
