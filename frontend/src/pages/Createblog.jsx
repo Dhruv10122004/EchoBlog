@@ -26,7 +26,7 @@ const Createblog = () => {
 
     setUploading(true)
     try {
-      // Create preview
+      // Preview
       const reader = new FileReader()
       reader.onload = (e) => setImagePreview(e.target.result)
       reader.readAsDataURL(file)
@@ -94,7 +94,8 @@ const Createblog = () => {
         {/* Progress Bar */}
         <div className="w-full h-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-teal-500 rounded-t-3xl" />
 
-        <form key={formKey} className="p-8 md:p-12 space-y-8">
+        {/* ✅ Attach onSubmit handler to <form> */}
+        <form key={formKey} onSubmit={handleSubmit} className="p-8 md:p-12 space-y-8">
           {/* Title Input */}
           <div className="space-y-2">
             <label className="text-gray-700 dark:text-gray-300 font-semibold text-lg flex items-center space-x-2">
@@ -187,7 +188,7 @@ const Createblog = () => {
             </div>
           </div>
 
-          {/* Content Editor */}
+          {/* Blog Content Editor */}
           <div className="space-y-4">
             <label className="text-gray-700 dark:text-gray-300 font-semibold text-lg flex items-center space-x-2">
               <span>✍️</span>
@@ -218,7 +219,6 @@ const Createblog = () => {
           <div className="flex justify-center pt-8">
             <button
               type="submit"
-              onClick={handleSubmit}
               disabled={creating || uploading}
               className={`px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform ${
                 creating || uploading
