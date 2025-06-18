@@ -2,10 +2,7 @@ import { Link } from "react-router-dom"
 import { IoApps, IoTimeOutline, IoEyeOutline } from "react-icons/io5"
 
 const Blogcard = ({ blogdata }) => {
-  const apiURL =
-    process.env.NODE_ENV === "production"
-      ? "https://echoblog-seep.onrender.com/"
-      : "http://localhost:8000/";
+  const apiURL = "https://echoblog-seep.onrender.com";
   const imageUrl = new URL(blogdata.image, apiURL).toString();
 
   if (!blogdata || !blogdata.image) {
