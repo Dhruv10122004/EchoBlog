@@ -73,7 +73,11 @@ app.post('/blog', async (req, res) => {
 
 // Route: Upload image file
 app.post('/blogimage', upload.single('file'), (req, res) => {
-  res.json(req.file);
+  const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+  res.json({
+    filename: req.file.filename,
+    url: fileUrl,
+  });
 });
 
 const PORT = process.env.PORT || 8000;
