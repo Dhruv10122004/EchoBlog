@@ -26,22 +26,25 @@ const Createblog = () => {
 
     setUploading(true)
     try {
-      // Preview
-      const reader = new FileReader()
-      reader.onload = (e) => setImagePreview(e.target.result)
-      reader.readAsDataURL(file)
-
       const uploadedFile = await uploadFile(file)
-      if (uploadedFile.path) {
-        setNewBlog({ ...newBlog, image: uploadedFile.path })
+      if (uploadedFile?.path) {
+        setNewBlog((prev) => ({ ...prev, image: uploadedFile.path }))
+        const reader = new FileReader()
+        reader.onload = (e) => setImagePreview(e.target.result)
+        reader.readAsDataURL(file)
+      } else {
+        throw new Error("No path returned")
       }
     } catch (error) {
       console.error("Upload error:", error)
-      alert("Failed to upload image")
+      alert("❌ Failed to upload image. Please try again.")
+      setImagePreview(null)
+      setNewBlog((prev) => ({ ...prev, image: "" }))
     } finally {
       setUploading(false)
     }
   }
+
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -123,11 +126,10 @@ const Createblog = () => {
                   key={category.text}
                   type="button"
                   onClick={() => setNewBlog({ ...newBlog, category: category.text })}
-                  className={`p-4 rounded-xl border-2 transition-all duration-300 ${
-                    newBlog.category === category.text
+                  className={`p-4 rounded-xl border-2 transition-all duration-300 ${newBlog.category === category.text
                       ? `bg-gradient-to-r ${category.color} text-white border-transparent shadow-lg transform scale-105`
                       : "border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:border-indigo-300 dark:hover:border-indigo-500"
-                  }`}
+                    }`}
                 >
                   <div className="text-2xl mb-2">{category.icon}</div>
                   <div className="font-semibold">{category.text}</div>
@@ -154,11 +156,10 @@ const Createblog = () => {
               />
               <label
                 htmlFor="image-upload"
-                className={`flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-xl cursor-pointer transition-all duration-300 ${
-                  uploading
+                className={`flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-xl cursor-pointer transition-all duration-300 ${uploading
                     ? "border-indigo-300 bg-indigo-50 dark:bg-indigo-900/20"
                     : "border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 hover:border-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20"
-                }`}
+                  }`}
               >
                 {imagePreview ? (
                   <div className="relative w-full h-full">
@@ -220,11 +221,10 @@ const Createblog = () => {
             <button
               type="submit"
               disabled={creating || uploading}
-              className={`px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform ${
-                creating || uploading
+              className={`px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform ${creating || uploading
                   ? "bg-gray-400 text-gray-200 cursor-not-allowed"
                   : "bg-gradient-to-r from-indigo-600 to-teal-500 hover:from-indigo-700 hover:to-teal-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-1"
-              }`}
+                }`}
             >
               {creating ? (
                 <div className="flex items-center space-x-2">
