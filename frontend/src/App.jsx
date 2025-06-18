@@ -19,7 +19,7 @@ function App() {
           <Route path='/' element={<Home />}></Route>
           <Route path='/blog/:id' element={<Blog />}></Route>
           <Route path='/create' element={<Createblog />}></Route>
-          <Route path='/*' element={<Nopage />}></Route>
+          <Route path='*' element={<Nopage />}></Route>
         </Route>
 
       </Routes>
