@@ -3,7 +3,10 @@ import { IoApps, IoTimeOutline, IoEyeOutline } from "react-icons/io5"
 
 const Blogcard = ({ blogdata }) => {
   const apiURL = "https://echoblog-seep.onrender.com";
-  const imageUrl = new URL(blogdata.image, apiURL).toString();
+  const imageUrl = blogdata.image?.startsWith("http")
+  ? blogdata.image
+  : new URL(blogdata.image, apiURL).toString();
+
   if (!blogdata || !blogdata.image) {
     console.warn("Missing blogdata or image")
     return null

@@ -26,32 +26,31 @@ const Createblog = () => {
 
     setUploading(true)
     try {
+      // Preview image (optional but helpful)
       const reader = new FileReader()
       reader.onload = (e) => setImagePreview(e.target.result)
       reader.readAsDataURL(file)
 
+      // Upload to server
       const uploadedFile = await uploadFile(file)
-      if (uploadedFile.path) {
+      if (uploadedFile && uploadedFile.path) {
         console.log("Uploaded image path:", uploadedFile.path)
-        setNewBlog(prev => ({ ...prev, image: uploadedFile.path })) // Ensure this runs after upload
+        setNewBlog(prev => ({ ...prev, image: uploadedFile.path }))
       } else {
-        alert("Image upload failed")
+        alert("Image upload failed.")
       }
     } catch (error) {
       console.error("Upload error:", error)
-      alert("Failed to upload image")
+      alert("Failed to upload image.")
     } finally {
       setUploading(false)
     }
   }
 
-
-
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log("Submitting blog:", newBlog)
     if (!newBlog.title || !newBlog.category || !newBlog.image) {
-      alert("Please fill in all required fields")
+      alert("Please fill in all required fields including image.")
       return
     }
 
@@ -62,13 +61,13 @@ const Createblog = () => {
         alert("🎉 Blog created successfully!")
         setNewBlog(blankBlog)
         setImagePreview(null)
-        setFormKey((prev) => prev + 1)
+        setFormKey((prev) => prev + 1) // Reset form
       } else {
-        alert("Failed to create blog")
+        alert("Failed to create blog.")
       }
-    } catch (err) {
-      alert("Error while creating blog")
-      console.error(err)
+    } catch (error) {
+      console.error("Create error:", error)
+      alert("Error while creating blog.")
     } finally {
       setCreating(false)
     }
@@ -83,7 +82,6 @@ const Createblog = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4">
-      {/* Header */}
       <div className="text-center mb-12">
         <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-indigo-500 to-teal-500 rounded-full mb-4">
           <IoCreateOutline className="text-white text-2xl" />
@@ -95,31 +93,26 @@ const Createblog = () => {
       </div>
 
       <div className="bg-white dark:bg-gray-800 shadow-2xl rounded-3xl overflow-hidden transition-colors duration-300">
-        {/* Progress Bar */}
         <div className="w-full h-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-teal-500 rounded-t-3xl" />
-
-        {/* ✅ Attach onSubmit handler to <form> */}
         <form key={formKey} onSubmit={handleSubmit} className="p-8 md:p-12 space-y-8">
-          {/* Title Input */}
+          {/* Title */}
           <div className="space-y-2">
             <label className="text-gray-700 dark:text-gray-300 font-semibold text-lg flex items-center space-x-2">
-              <span>📝</span>
-              <span>Blog Title</span>
+              <span>📝</span><span>Blog Title</span>
             </label>
             <input
               type="text"
               className="w-full h-14 border-2 border-gray-200 dark:border-gray-600 rounded-xl px-4 text-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-800 focus:border-indigo-500 transition-all duration-300"
               value={newBlog.title}
-              placeholder="Enter an engaging title for your blog post..."
               onChange={(e) => setNewBlog({ ...newBlog, title: e.target.value })}
+              placeholder="Enter blog title..."
             />
           </div>
 
-          {/* Category Selection */}
+          {/* Category */}
           <div className="space-y-4">
             <label className="text-gray-700 dark:text-gray-300 font-semibold text-lg flex items-center space-x-2">
-              <span>📂</span>
-              <span>Category</span>
+              <span>📂</span><span>Category</span>
             </label>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {menu.map((category) => (
@@ -165,7 +158,7 @@ const Createblog = () => {
                 {imagePreview ? (
                   <div className="relative w-full h-full">
                     <img
-                      src={imagePreview || "/placeholder.svg"}
+                      src={imagePreview}
                       alt="Preview"
                       className="w-full h-full object-cover rounded-xl"
                     />
@@ -190,18 +183,17 @@ const Createblog = () => {
             </div>
           </div>
 
-          {/* Blog Content Editor */}
+          {/* Blog Content */}
           <div className="space-y-4">
             <label className="text-gray-700 dark:text-gray-300 font-semibold text-lg flex items-center space-x-2">
-              <span>✍️</span>
-              <span>Blog Content</span>
+              <span>✍️</span><span>Blog Content</span>
             </label>
             <div className="border-2 border-gray-200 dark:border-gray-600 rounded-xl overflow-hidden bg-white dark:bg-gray-700 min-h-[300px]">
               <ReactQuill
                 theme="snow"
                 value={newBlog.post}
                 onChange={(content) => setNewBlog({ ...newBlog, post: content })}
-                placeholder="Start writing your amazing blog post here..."
+                placeholder="Start writing your blog..."
                 style={{ height: "300px" }}
                 modules={{
                   toolbar: [
