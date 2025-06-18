@@ -14,7 +14,7 @@ import {
 } from "react-icons/io5"
 
 const Blog = () => {
-  const apiURL = "http://localhost:8000/"
+  const apiURL = "https://echoblog-seep.onrender.com/"
   const { id } = useParams()
   const [blog, setBlog] = useState(null)
   const [loading, setLoading] = useState(true)
