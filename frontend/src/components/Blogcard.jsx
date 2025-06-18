@@ -2,8 +2,11 @@ import { Link } from "react-router-dom"
 import { IoApps, IoTimeOutline, IoEyeOutline } from "react-icons/io5"
 
 const Blogcard = ({ blogdata }) => {
-  const apiURL = "http://localhost:8000/"
-  const imageUrl = new URL(blogdata.image, apiURL).toString()
+  const apiURL =
+    process.env.NODE_ENV === "production"
+      ? "https://echoblog-seep.onrender.com/"
+      : "http://localhost:8000/";
+  const imageUrl = new URL(blogdata.image, apiURL).toString();
 
   if (!blogdata || !blogdata.image) {
     console.warn("Missing blogdata or image")
@@ -43,17 +46,12 @@ const Blogcard = ({ blogdata }) => {
               e.target.src = "https://via.placeholder.com/400x250?text=Image+Not+Found"
             }}
           />
-          {/* Overlay gradient */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-          {/* Category badge */}
           <div
             className={`absolute top-4 left-4 px-3 py-1 rounded-full text-white text-xs font-semibold bg-gradient-to-r ${getCategoryGradient(blogdata.category)} shadow-lg`}
           >
             {blogdata.category}
           </div>
-
-          {/* Reading time badge */}
           <div className="absolute top-4 right-4 bg-black/70 text-white px-2 py-1 rounded-full text-xs flex items-center space-x-1">
             <IoTimeOutline />
             <span>5 min</span>
@@ -70,14 +68,12 @@ const Blogcard = ({ blogdata }) => {
               <IoApps className="text-indigo-500" />
               <span className="text-sm font-medium">{blogdata.category}</span>
             </div>
-
             <div className="flex items-center space-x-1 text-gray-400 text-sm">
               <IoEyeOutline />
               <span>234</span>
             </div>
           </div>
 
-          {/* Read more button */}
           <div className="mt-4 flex justify-end">
             <span className="text-indigo-600 dark:text-indigo-400 text-sm font-semibold group-hover:text-indigo-700 dark:group-hover:text-indigo-300 transition-colors duration-300">
               Read More →
