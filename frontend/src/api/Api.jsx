@@ -34,22 +34,22 @@ export const getBlogById = async (id) => {
   }
 };
 
-export const uploadFile = (file) => {
-  const formData = new FormData();
-  formData.append('file', file);
+export const uploadFile = async (file) => {
+  const formData = new FormData()
+  formData.append("file", file)
 
-  const config = {
-    headers: {
-      'content-type': 'multipart/form-data',
-    },
-  };
+  const response = await fetch("/api/upload", {
+    method: "POST",
+    body: formData
+  })
 
-  return axios
-    .post(`${apiURL}/blogimage`, formData, config)
-    .then((response) => response.data.url) // ✅ return full URL here
-    .catch((error) => {
-      console.error('Error uploading file:', error);
-      throw error;
-    });
+  if (!response.ok) throw new Error("Upload failed")
+
+  const data = await response.json()
+  console.log("Upload response:", data)
+
+  // This must include { path: "..." }
+  return data
 };
+
 

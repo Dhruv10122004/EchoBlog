@@ -26,22 +26,35 @@ const Createblog = () => {
 
     setUploading(true)
     try {
-      // Preview image (optional but helpful)
-      const reader = new FileReader()
-      reader.onload = (e) => setImagePreview(e.target.result)
-      reader.readAsDataURL(file)
+      console.log("Uploading file:", file)
 
-      // Upload to server
+      // Upload to server first
       const uploadedFile = await uploadFile(file)
-      if (uploadedFile && uploadedFile.path) {
-        console.log("Uploaded image path:", uploadedFile.path)
-        setNewBlog(prev => ({ ...prev, image: uploadedFile.path }))
-      } else {
-        alert("Image upload failed.")
+      console.log("uploadFile response:", uploadedFile)
+
+      if (!uploadedFile || !uploadedFile.path) {
+        alert("Upload failed or invalid response.")
+        setUploading(false)
+        return
       }
-    } catch (error) {
-      console.error("Upload error:", error)
-      alert("Failed to upload image.")
+
+      // Update state with actual path
+      setNewBlog((prev) => ({
+        ...prev,
+        image: uploadedFile.path
+      }))
+      console.log("Set image path:", uploadedFile.path)
+
+      // Now read preview (purely for display)
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        setImagePreview(e.target.result)
+        console.log("Preview set.")
+      }
+      reader.readAsDataURL(file)
+    } catch (err) {
+      console.error("Upload failed:", err)
+      alert("Image upload failed.")
     } finally {
       setUploading(false)
     }
@@ -49,8 +62,11 @@ const Createblog = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    console.log("Submitting blog:", newBlog)
+
     if (!newBlog.title || !newBlog.category || !newBlog.image) {
-      alert("Please fill in all required fields including image.")
+      alert("Please fill in all required fields including uploaded image.")
       return
     }
 
@@ -58,20 +74,21 @@ const Createblog = () => {
     try {
       const createdBlog = await createBlog(newBlog)
       if (createdBlog) {
-        alert("🎉 Blog created successfully!")
+        alert("Blog created successfully!")
         setNewBlog(blankBlog)
         setImagePreview(null)
-        setFormKey((prev) => prev + 1) // Reset form
+        setFormKey((prev) => prev + 1)
       } else {
-        alert("Failed to create blog.")
+        alert("Blog creation failed.")
       }
-    } catch (error) {
-      console.error("Create error:", error)
-      alert("Error while creating blog.")
+    } catch (err) {
+      console.error("Error while creating blog:", err)
+      alert("Something went wrong.")
     } finally {
       setCreating(false)
     }
   }
+
 
   const menu = [
     { text: "Nature", icon: "🌿", color: "from-green-400 to-emerald-600" },
