@@ -35,21 +35,23 @@ export const getBlogById = async (id) => {
 };
 
 export const uploadFile = async (file) => {
-  const formData = new FormData()
-  formData.append("file", file)
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
 
-  const response = await fetch("/api/upload", {
-    method: "POST",
-    body: formData
-  })
+    const response = await axios.post(`${apiURL}/upload`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
-  if (!response.ok) throw new Error("Upload failed")
+    console.log("Upload response:", response.data);
 
-  const data = await response.json()
-  console.log("Upload response:", data)
-
-  // This must include { path: "..." }
-  return data
+    return response.data; // should include { path: "..." }
+  } catch (error) {
+    console.error("Upload failed:", error);
+    throw new Error("Image upload failed");
+  }
 };
 
 
